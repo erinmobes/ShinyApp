@@ -54,7 +54,7 @@ library(plotly)
 #            "Mil Exp % GDP", "Mil Exp % Gov Exp"
 #          ))
 
-source(file = "C://Users//Shilpa//Documents//R//shinyapp//GrossExportsPartnerShare.R")
+source(file = file.path(getwd(), "GrossExportsPartnerShare.R"))
 
 ui <- dashboardPage(
   dashboardHeader(title = "Basic Dashboard"),
