@@ -4,8 +4,6 @@ library(googleVis)
 library(shiny)
 library(rsconnect)
 
-install.packages('rsconnect')
-
 # Download World Bank data and turn into data.table
 myDT <- data.table(
   wb(indicator = c(
