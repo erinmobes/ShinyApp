@@ -1,15 +1,17 @@
+
+# # Install necessary packages 
+# install.packages(c('data360r', 'tidyverse', 'data.table', 'ggthemes', 'RColorBrewer', 'devtools', 'ggflags', 'ISOcodes', 'countrycode'))
+# devtools::install_github("YTLogos/ggflags")
+
 library(data360r) #database of indicators
 library(tidyverse)
 library(data.table) #melt
 library(ggthemes)
-library(officer)
 library(RColorBrewer)
 library(devtools)
-#devtools::install_github("YTLogos/ggflags") 
 library(ggflags)
 library(ISOcodes)
 library(countrycode)
-install.packages('ISOcodes')
 
 # ggflags sample 
 DF <- data.frame(country = c("UK", "France", "Germany"), 
