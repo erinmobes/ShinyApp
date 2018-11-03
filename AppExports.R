@@ -56,7 +56,7 @@ dat <- dat %>%
 # Line
 
 ui = shinyUI(fluidPage(
-  titlePanel("Analysis Test"),
+  titlePanel("Exports Test"),
   mainPanel(
     navlistPanel(
       tabPanel("Share of Exports", h1("Exports Chart"),
@@ -66,7 +66,7 @@ ui = shinyUI(fluidPage(
                  sidebarPanel(
                    selectInput("country", "Country:", 
                                choices=dat$`Country Name`,
-                               selected = choices[i]),
+                               selected = ""),
                    hr(),
                    helpText("Gross Exports, percent to each Competition Country, World Bank Data")
                  ),
