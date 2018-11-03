@@ -1,6 +1,6 @@
 
 # # Install necessary packages 
-# install.packages(c('data360r', 'tidyverse', 'data.table', 'ggthemes', 'RColorBrewer', 'devtools', 'ggflags', 'ISOcodes', 'countrycode'))
+ install.packages(c('data360r', 'tidyverse', 'data.table', 'ggthemes', 'RColorBrewer', 'devtools', 'ggflags', 'ISOcodes', 'countrycode'))
 # devtools::install_github("YTLogos/ggflags")
 
 library(data360r) #database of indicators
