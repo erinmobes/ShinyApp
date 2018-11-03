@@ -4,6 +4,7 @@ library(googleVis)
 library(shiny)
 library(rsconnect)
 library(shinydashboard)
+library(foreign)
 # blahhh
 ## bllaaahhh
 
@@ -50,27 +51,47 @@ setnames(wDT, names(wDT),
            "Mil Exp % GDP", "Mil Exp % Gov Exp"
          ))
 
-ui = shinyUI(fluidPage(
-  titlePanel("Analysis Test"),
-  mainPanel(
-    navlistPanel(
-      tabPanel("MotionChart",h1("Motion Chart"),tableOutput("motionchart2")),
-      tabPanel("Phones", h1("Phone Chart"),
-               sidebarLayout(      
-                 
-                 # Define the sidebar with one input
-                 sidebarPanel(
-                   selectInput("region", "Region:", 
-                               choices=colnames(WorldPhones)),
-                   hr(),
-                   helpText("Data from AT&T (1961) The World's Telephones.")
-                 ),
-                 
-                 # Create a spot for the barplot
-                 mainPanel(
-                   plotOutput("phonePlot")  
-                   
-                 )))))))
+test <- source(file = "C://Users//Shilpa//Documents//R//shinyapp//GrossExportsPartnerShare.R")
+
+ui <- dashboardPage(
+  dashboardHeader(title = "Basic Dashboard"),
+  dashboardSidebar(),
+  dashboardBody(
+    fluidRow(
+      box(
+        selectInput("dropdown", "Export Country of Comparison", choices = c("Vietnam", "Australia", "Thailand"))
+        )
+    )
+  )
+)
+
+server <- function (input, output, session){
+  dropdownInput <- reactive({
+    
+  })
+}
+# 
+# ui = shinyUI(fluidPage(
+#   titlePanel("Analysis Test"),
+#   mainPanel(
+#     navlistPanel(
+#       tabPanel("MotionChart",h1("Motion Chart"),tableOutput("motionchart2")),
+#       tabPanel("Phones", h1("Phone Chart"),
+#                sidebarLayout(      
+#                  
+#                  # Define the sidebar with one input
+#                  sidebarPanel(
+#                    selectInput("region", "Region:", 
+#                                choices=colnames(WorldPhones)),
+#                    hr(),
+#                    helpText("Data from AT&T (1961) The World's Telephones.")
+#                  ),
+#                  
+#                  # Create a spot for the barplot
+#                  mainPanel(
+#                    plotOutput("phonePlot")  
+#                    
+#                  )))))))
 
 server = shinyServer(function(input, output, session) {
   
