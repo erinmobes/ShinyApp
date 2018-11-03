@@ -64,10 +64,13 @@ ui <- dashboardPage(
     ),
   dashboardBody(
     fluidRow(
+      selectInput("dropdown", "Export Country of Comparison", choices = dat$`Country Name`, selected =""),
       box(
-        selectInput("dropdown", "Export Country of Comparison", choices = dat$`Country Name`, selected =""),
         plotlyOutput("graph1")
-        )
+        ),
+      box(
+        plotlyOutput("graph2")
+      )
     )
   )
 )
@@ -89,6 +92,22 @@ server <- function (input, output, session){
     )
   }
   )
+  
+  output$graph2 <- renderPlotly({
+    print(
+      ggplotly(
+        ggplot(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
+          geom_line() + 
+          scale_color_manual(name = "Partners", values=c("#7B3F00", "#FF3300", "#0066CC")) +
+          theme_classic() +
+          theme(legend.position = "top", 
+                legend.background = element_rect(fill = "lightgrey"))  + 
+          labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports")
+      )
+    )
+  }
+  )
+  
 # 
 #     output$graph1 <- renderPlotly(
 #       plot_ly(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + 
