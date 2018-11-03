@@ -38,7 +38,10 @@ ind_partner <- get_metadata360(site='tc', metadata_type = 'indicators') %>%
 # Indicators of note: Exports = 2327, Imports = 2335
 
 # Pull all data for an indiciator
-df <- get_data360(site = "tc", indicator_id = 2353)
+df_export <- get_data360(indicator_id = 2353,  output_type = 'long')
+df_import <- get_data360(indicator_id = 2360,  output_type = 'long')
+
+df <- rbind(df_export, df_import)
 
 # Create a country lookup between ISO3 and Country Name for future use
 lu_country <- df %>%
@@ -49,13 +52,10 @@ lu_country <- df %>%
 # Add Country Name as "Partner" based on the ISO3
 df <- df %>%
   left_join(lu_country, by = c("Partner" = "Country ISO3"))
-
-# Transform from wide data to long data
-df <- melt(df)
-
+glimpse(dat)
 # Rename variable as year
 df <- df %>%
-  plyr::rename(c("variable" = "Year"))
+  plyr::rename(c("Period" = "Year"))
 
 # Filter to Competition Countries
 dat <- df %>%
@@ -72,17 +72,13 @@ dat$iso2 <- tolower(dat$iso2)
 first_last_mid_point <-  dat %>%
   filter(Year %in% c(max(Year), min(Year), round(mean(Year))))
 
-# Testing dropdown
-dat <- dat %>%
-  filter(`Country Name` %in% c('Australia', 'Vietnam', 'Thailand'))
-
-# Line Plot with flag points
-plot <- ggplot(dat, aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + geom_line() + geom_flag(data = first_last_mid_point, size = 10, show.legend = T) + 
-  theme_classic() +
-  theme(legend.position = "top", panel.background = element_rect(fill = "lightgrey"), plot.background = element_rect(fill = "lightgrey"), legend.background = element_rect(fill = "lightgrey"))  + 
-  labs(title = paste0(country_long, ": Share of Gross Exports by Country"), y = "% of Gross Exports", country = "") + 
-  scale_country(labels=c("China", "Russia",  "United States")) 
-plot
+# # Line Plot with flag points
+# plot <- ggplot(dat, aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + geom_line() + geom_flag(data = first_last_mid_point, size = 10, show.legend = T) + 
+#   theme_classic() +
+#   theme(legend.position = "top", panel.background = element_rect(fill = "lightgrey"), plot.background = element_rect(fill = "lightgrey"), legend.background = element_rect(fill = "lightgrey"))  + 
+#   labs(title = paste0(country_long, ": Share of Gross Exports by Country"), y = "% of Gross Exports", country = "") + 
+#   scale_country(labels=c("China", "Russia",  "United States")) 
+# plot
 
 # # Line plot with colored lines
 # plot <- ggplot(dat, aes(x=Year, y=value, color = Partner, group = Partner, country = iso2)) + geom_line()  + 

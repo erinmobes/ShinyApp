@@ -64,12 +64,12 @@ ui <- dashboardPage(
     ),
   dashboardBody(
     fluidRow(
-      selectInput("dropdown", "Export Country of Comparison", choices = dat$`Country Name`, selected =""),
+      selectInput("dropdown", "Country of Comparison", choices = dat$`Country Name`, selected =""),
       box(
-        plotlyOutput("graph1")
+        plotlyOutput("exports")
         ),
       box(
-        plotlyOutput("graph2")
+        plotlyOutput("imports")
       )
     )
   )
@@ -78,10 +78,10 @@ ui <- dashboardPage(
 server <- function (input, output, session){
   
   
-  output$graph1 <- renderPlotly({
+  output$exports <- renderPlotly({
     print(
       ggplotly(
-        ggplot(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
+        ggplot(dat %>% filter(`Country Name`== input$dropdown, dat$Indicator=="Gross exports, partner shares"), aes(x=Year, y=Observation, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
           geom_line() + 
           scale_color_manual(name = "Partners", values=c("#7B3F00", "#FF3300", "#0066CC")) +
           theme_classic() +
@@ -92,17 +92,17 @@ server <- function (input, output, session){
     )
   }
   )
-  
-  output$graph2 <- renderPlotly({
+ #dat[dat$`Country Name`== input$dropdown&dat$Indicator=="Gross imports, partner shares",] 
+  output$imports <- renderPlotly({
     print(
       ggplotly(
-        ggplot(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
+        ggplot(dat %>% filter(`Country Name`== input$dropdown, dat$Indicator=="Gross imports, partner shares"), aes(x=Year, y=Observation, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
           geom_line() + 
-          scale_color_manual(name = "Partners", values=c("#7B3F00", "#FF3300", "#0066CC")) +
+          scale_color_manual(name = "Partners", values=c("#7B3F00", "orange3", "#0066CC")) +
           theme_classic() +
           theme(legend.position = "top", 
                 legend.background = element_rect(fill = "lightgrey"))  + 
-          labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports")
+          labs(title = paste0(input$dropdown, ": Share of Gross Imports by Country"), y = "% of Gross Imports")
       )
     )
   }
@@ -154,22 +154,7 @@ server <- function (input, output, session){
 #                     sizevar = "GDP",
 #                     colorvar = "Region")
 #   })
-#   
-#   output$phonePlot <- renderPlot({
-#     
-#     # Render a barplot
-#     barplot(WorldPhones[,input$region]*1000, 
-#             main=input$region,
-#             ylab="Number of Telephones",
-#             xlab="Year")
-#   })
-#   
 # })
-# 
-# barplot(WorldPhones[,'Oceania']*1000, 
-#         main='Oceania',
-#         ylab="Number of Telephones",
-#         xlab="Year")
 
 # setwd('C:/Users/1274806318A/Desktop/App')
 
