@@ -57,24 +57,24 @@ df <- melt(df)
 df <- df %>%
   plyr::rename(c("variable" = "Year"))
 
-# Filter to vietnam and Competition Countris
-country <- "VNM"
+# Filter to Competition Countries
 dat <- df %>%
-  filter(`Country ISO3` == country , Partner %in% c('CHN', 'RUS', 'USA'))
-country_long <- dat$`Country Name`[1]
+  filter(Partner %in% c('CHN', 'RUS', 'USA'))
 
 # Convert factor year to integer year
 dat$Year <- as.numeric(as.character(dat$Year))
 
 dat$iso2 <- dat$Partner
-
-glimpse(dat)
 dat$iso2 <- countrycode(dat$iso2, 'iso3c', 'iso2c')
 dat$iso2 <- tolower(dat$iso2)
 
 # Select the points 
 first_last_mid_point <-  dat %>%
   filter(Year %in% c(max(Year), min(Year), round(mean(Year))))
+
+# Testing dropdown
+dat <- dat %>%
+  filter(`Country Name` %in% c('Australia', 'Vietnam', 'Thailand'))
 
 # Line Plot with flag points
 plot <- ggplot(dat, aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + geom_line() + geom_flag(data = first_last_mid_point, size = 10, show.legend = T) + 
@@ -84,7 +84,9 @@ plot <- ggplot(dat, aes(x=Year, y=value, country = iso2, group = Partner, stroke
   scale_country(labels=c("China", "Russia",  "United States")) 
 plot
 
-# Line plot with colored lines
-plot <- ggplot(dat, aes(x=Year, y=value, color = Partner, group = Partner, country = iso2)) + geom_line()  + 
-  scale_colour_manual(values=c(CHN="#7B3F00",RUS="orange3",USA="blue"))
-plot
+# # Line plot with colored lines
+# plot <- ggplot(dat, aes(x=Year, y=value, color = Partner, group = Partner, country = iso2)) + geom_line()  + 
+#   scale_colour_manual(values=c(CHN="#7B3F00",RUS="orange3",USA="blue"))
+# plot
+
+
