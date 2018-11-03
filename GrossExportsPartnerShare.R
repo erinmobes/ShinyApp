@@ -13,19 +13,19 @@ library(ggflags)
 library(ISOcodes)
 library(countrycode)
 
-# ggflags sample 
-DF <- data.frame(country = c("UK", "France", "Germany"), 
-                 value=c(4, 3, 7))
-ggplot(DF, aes(x=country, country=country, y=value)) + geom_flag(size = 10)
-
-data(lflags)
-set.seed(1234)
-d <- data.frame(x=rnorm(10), y=rnorm(10), 
-                country=sample(c("ar","fr"), 10, TRUE), 
-                stringsAsFactors = FALSE)
-ggplot(d, aes(x=x, y=y, country=country, size=x)) + 
-  geom_flag() + 
-  scale_country()
+# # ggflags sample 
+# DF <- data.frame(country = c("UK", "France", "Germany"), 
+#                  value=c(4, 3, 7))
+# ggplot(DF, aes(x=country, country=country, y=value)) + geom_flag(size = 10)
+# 
+# data(lflags)
+# set.seed(1234)
+# d <- data.frame(x=rnorm(10), y=rnorm(10), 
+#                 country=sample(c("ar","fr"), 10, TRUE), 
+#                 stringsAsFactors = FALSE)
+# ggplot(d, aes(x=x, y=y, country=country, size=x)) + 
+#   geom_flag() + 
+#   scale_country()
 
 # # Exports Data
 
@@ -85,6 +85,6 @@ plot <- ggplot(dat, aes(x=Year, y=value, country = iso2, group = Partner, stroke
 plot
 
 # Line plot with colored lines
-plot <- ggplot(dat, aes(x=Year, y=value, color = Partner, group = Partner, country = iso2)) + geom_line() + theme_() + 
+plot <- ggplot(dat, aes(x=Year, y=value, color = Partner, group = Partner, country = iso2)) + geom_line()  + 
   scale_colour_manual(values=c(CHN="#7B3F00",RUS="orange3",USA="blue"))
 plot

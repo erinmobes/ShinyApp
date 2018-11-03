@@ -99,6 +99,7 @@ barplot(WorldPhones[,'Oceania']*1000,
 # setwd('C:/Users/1274806318A/Desktop/App')
 
 # rsconnect::deployApp('C:/Users/1274806318A/Desktop/App', appName = 'Competition')
+
 # Deploy app from home
 # rsconnect::deployApp(getwd(), appName = 'Competition')
 shinyApp(ui = ui, server = server)
