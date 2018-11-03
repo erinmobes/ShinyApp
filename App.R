@@ -107,69 +107,8 @@ server <- function (input, output, session){
     )
   }
   )
-  
-# 
-#     output$graph1 <- renderPlotly(
-#       plot_ly(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + 
-#         geom_line() + geom_flag(data = first_last_mid_point[first_last_mid_point$`Country Name` == input$dropdown,], 
-#         size = 10, show.legend = T) + 
-#         theme_classic() +
-#         theme(legend.position = "top", panel.background = element_rect(fill = "lightgrey"), plot.background = element_rect(fill = "lightgrey"), legend.background = element_rect(fill = "lightgrey"))  + 
-#         labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports", country = "") + 
-#         scale_country(labels=c("China", "Russia",  "United States"))
-#               )
 }
 
-
-# 
-# ui = shinyUI(fluidPage(
-#   titlePanel("Analysis Test"),
-#   mainPanel(
-#     navlistPanel(
-#       tabPanel("MotionChart",h1("Motion Chart"),tableOutput("motionchart2")),
-#       tabPanel("Phones", h1("Phone Chart"),
-#                sidebarLayout(      
-#                  
-#                  # Define the sidebar with one input
-#                  sidebarPanel(
-#                    selectInput("region", "Region:", 
-#                                choices=colnames(WorldPhones)),
-#                    hr(),
-#                    helpText("Data from AT&T (1961) The World's Telephones.")
-#                  ),
-#                  
-#                  # Create a spot for the barplot
-#                  mainPanel(
-#                    plotOutput("phonePlot")  
-#                    
-#                  )))))))
-# 
-# server = shinyServer(function(input, output, session) {
-#   
-#   output$motionchart2 <- renderGvis({
-#     gvisMotionChart(wDT, idvar = "Country",
-#                     timevar = "Year",
-#                     xvar = "Mil Exp % Gov Exp",
-#                     yvar = "Trust in Gov",
-#                     sizevar = "GDP",
-#                     colorvar = "Region")
-#   })
-#   
-#   output$phonePlot <- renderPlot({
-#     
-#     # Render a barplot
-#     barplot(WorldPhones[,input$region]*1000, 
-#             main=input$region,
-#             ylab="Number of Telephones",
-#             xlab="Year")
-#   })
-#   
-# })
-# 
-# barplot(WorldPhones[,'Oceania']*1000, 
-#         main='Oceania',
-#         ylab="Number of Telephones",
-#         xlab="Year")
 
 # setwd('C:/Users/1274806318A/Desktop/App')
 
