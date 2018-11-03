@@ -58,13 +58,19 @@ source(file = file.path(getwd(), "GrossExportsPartnerShare.R"))
 
 ui <- dashboardPage(
   dashboardHeader(title = "Basic Dashboard"),
-  dashboardSidebar(),
+  dashboardSidebar(
+    menuItem("Menu1", icon = icon("dashboard")),
+    menuItem("Menu2", icon = icon("dashboard"))
+    ),
   dashboardBody(
     fluidRow(
+      selectInput("dropdown", "Export Country of Comparison", choices = dat$`Country Name`, selected =""),
       box(
-        selectInput("dropdown", "Export Country of Comparison", choices = dat$`Country Name`, selected =""),
         plotlyOutput("graph1")
-        )
+        ),
+      box(
+        plotlyOutput("graph2")
+      )
     )
   )
 )
@@ -72,15 +78,36 @@ ui <- dashboardPage(
 server <- function (input, output, session){
   
   
-  output$graph1 <- renderPlotly(
-    ggplot(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + 
-      geom_line() + geom_flag(data = first_last_mid_point[first_last_mid_point$`Country Name` == input$dropdown,], 
-                              size = 10, show.legend = T) + 
-      theme_classic() +
-      theme(legend.position = "top", panel.background = element_rect(fill = "lightgrey"), plot.background = element_rect(fill = "lightgrey"), legend.background = element_rect(fill = "lightgrey"))  + 
-      labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports", country = "") + 
-      scale_country(labels=c("China", "Russia",  "United States"))
+  output$graph1 <- renderPlotly({
+    print(
+      ggplotly(
+        ggplot(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
+          geom_line() + 
+          scale_color_manual(name = "Partners", values=c("#7B3F00", "#FF3300", "#0066CC")) +
+          theme_classic() +
+          theme(legend.position = "top", 
+                legend.background = element_rect(fill = "lightgrey"))  + 
+          labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports")
+      )
+    )
+  }
   )
+  
+  output$graph2 <- renderPlotly({
+    print(
+      ggplotly(
+        ggplot(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
+          geom_line() + 
+          scale_color_manual(name = "Partners", values=c("#7B3F00", "#FF3300", "#0066CC")) +
+          theme_classic() +
+          theme(legend.position = "top", 
+                legend.background = element_rect(fill = "lightgrey"))  + 
+          labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports")
+      )
+    )
+  }
+  )
+  
 # 
 #     output$graph1 <- renderPlotly(
 #       plot_ly(dat[dat$`Country Name`== input$dropdown,], aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + 
