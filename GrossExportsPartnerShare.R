@@ -32,6 +32,27 @@ library(countrycode)
 # All indicators available in Data360
 ind_all <- get_metadata360(site='tc', metadata_type = 'indicators')
 
+df_sum <- get_data360(indicator_id = c(
+28609, # GDP 
+515, # exports as a % of gdp
+507 # imports as a % of gdp
+), timeframes = 2014)
+
+df_sum <- get_data360(indicator_id = 515, output_type = "long") # exports as a % of gdp
+df_sum[,1:4, -1]
+test <- df_sum %>% select(c(1:4,-1))
+df_sum[,c(1:4)&c(-1)]
+glimpse(df_sum)
+
+blah <- df_sum[,-1]
+glimpse(blah)
+
+df_sum$value <- df_sum$`2014`
+df_sum <- df_sum %>% select(`Country Name`, Indicator, value)
+glimpse(df_sum2)
+setDT(df_sum)
+df_sum2 <- dcast(df_sum, `Country Name` ~ Indicator, value.var = "value")
+
 # Indicators that are by partner
 ind_partner <- get_metadata360(site='tc', metadata_type = 'indicators') %>%
   filter(byPartner == TRUE)
@@ -71,6 +92,19 @@ dat$iso2 <- tolower(dat$iso2)
 # Select the points 
 first_last_mid_point <-  dat %>%
   filter(Year %in% c(max(Year), min(Year), round(mean(Year))))
+
+df_sum
+
+dat_last <- dat %>%
+ filter(Year == max(Year))
+
+glimpse(dat)
+glimpse(df_sum)
+
+
+df_sum2 <- dat_last %>% left_join(df_sum)
+
+glimpse(df_sum2)
 
 # # Line Plot with flag points
 # plot <- ggplot(dat, aes(x=Year, y=value, country = iso2, group = Partner, stroke = "black")) + geom_line() + geom_flag(data = first_last_mid_point, size = 10, show.legend = T) + 
