@@ -57,8 +57,13 @@ library(plotly)
 source(file = file.path(getwd(), "GrossExportsPartnerShare.R"))
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Basic Dashboard"),
+  dashboardHeader(title = "My Dashboard"),
   dashboardSidebar(
+    
+    menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+    menuItem("Widgets", icon = icon("th"), tabName = "widgets",
+             badgeLabel = "new", badgeColor = "green"),
+    
     menuItem("Menu1", icon = icon("dashboard")),
     menuItem("Menu2", icon = icon("dashboard"))
     ),
@@ -66,10 +71,15 @@ ui <- dashboardPage(
     fluidRow(
       selectInput("dropdown", "Country of Comparison", choices = dat$`Country Name`, selected =""),
       box(
-        plotlyOutput("exports")
+        plotlyOutput("exports"),
+        infoBox("China GDP", value = 4, width = 5, color = "olive"),
+        infoBox("Russia GDP", value = 4, width = 5, color = "orange"),
+        infoBox("USA GDP", value = 4, width = 5)
         ),
       box(
-        plotlyOutput("imports")
+        plotlyOutput("imports"),
+        infoBox("GDP", value = 4, width = 3),
+        infoBox("ImportGDP", value = 4, width = 5)
       )
     )
   )
@@ -77,17 +87,20 @@ ui <- dashboardPage(
 
 server <- function (input, output, session){
   
+
+ 
   
   output$exports <- renderPlotly({
     print(
       ggplotly(
         ggplot(dat %>% filter(`Country Name`== input$dropdown, dat$Indicator=="Gross exports, partner shares"), aes(x=Year, y=Observation, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
           geom_line() + 
-          scale_color_manual(name = "Partners", values=c("#7B3F00", "#FF3300", "#0066CC")) +
+          scale_color_manual(name = "Country", values=c("#7B3F00", "#FF3300", "#0066CC")) +
           theme_classic() +
           theme(legend.position = "top", 
                 legend.background = element_rect(fill = "lightgrey"))  + 
-          labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports")
+          labs(title = paste0(input$dropdown, ": Share of Gross Exports by Country"), y = "% of Gross Exports"),
+        tooltip = c("x", "y")
       )
     )
   }
@@ -98,11 +111,12 @@ server <- function (input, output, session){
       ggplotly(
         ggplot(dat %>% filter(`Country Name`== input$dropdown, dat$Indicator=="Gross imports, partner shares"), aes(x=Year, y=Observation, group = `Partner Name`, color = `Partner Name`, width = 6)) + 
           geom_line() + 
-          scale_color_manual(name = "Partners", values=c("#7B3F00", "orange3", "#0066CC")) +
+          scale_color_manual(name = "Country", values=c("#7B3F00", "orange3", "#0066CC")) +
           theme_classic() +
           theme(legend.position = "top", 
                 legend.background = element_rect(fill = "lightgrey"))  + 
-          labs(title = paste0(input$dropdown, ": Share of Gross Imports by Country"), y = "% of Gross Imports")
+          labs(title = paste0(input$dropdown, ": Share of Gross Imports by Country"), y = "% of Gross Imports"),
+        tooltip = c("x", "y")
       )
     )
   }
